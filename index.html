@@ -3,50 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Rose Day!</title>
+    <title>Rose Day Celebration</title>
     <style>
-        body { text-align: center; font-family: Arial, sans-serif; }
-        .confetti { position: absolute; width: 100%; height: 100%; pointer-events: none; }
-        /* Styles for countdown timer */
-        #countdown { font-size: 2em; }
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffcccb, #ff7f50, #ff4500);
+            animation: backgroundAnimation 10s infinite alternate;
+            font-family: Arial, sans-serif;
+        }
+        @keyframes backgroundAnimation {
+            0% { background-color: #ffcccb; }
+            50% { background-color: #ff7f50; }
+            100% { background-color: #ff4500; }
+        }
+        .container {
+            text-align: center;
+            position: relative;
+            color: #ffffff;
+            padding-top: 50px;
+        }
+        h1 {
+            font-size: 60px;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.6);
+            animation: glow 1s infinite alternate;
+        }
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px rgba(255, 105, 180, 0.6);
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(255, 105, 180, 1);
+            }
+        }
+        .button {
+            background-color: rgba(255, 0, 0, 0.8);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+            transition: 0.5s;
+            display: inline-block;
+        }
+        .button:before {
+            content: '';
+            position: absolute;
+            width: 300%;
+            height: 300%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            transition: transform 0.5s;
+            border-radius: 50%;
+            z-index: 0;
+        }
+        .button:hover:before {
+            transform: scale(1);
+        }
+        .button:hover {
+            color: #fff;
+        }
+        .timer {
+            font-size: 40px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-    <h1>Happy Rose Day!</h1>
-    <p id="countdown"></p>
-    <button onclick="personalize()">Personalize Message</button>
-    <p id="personalMessage"></p>
-
+    <div class="container">
+        <h1>Happy Rose Day!</h1>
+        <button class="button" onclick="playMusic()">Send a Rose</button>
+        <div class="timer" id="countdown"></div>
+    </div>
+    <audio id="music" loop>
+        <source src="your-audio-file.mp3" type="audio/mpeg">
+        Your browser does not support the audio tag.
+    </audio>
     <script>
-        // Countdown Timer logic
-        const countDownDate = new Date("2026-02-14T00:00:00Z").getTime();
-        setInterval(() => {
+        const countdownDate = new Date("2026-02-14T00:00:00").getTime();
+
+        const countdownFunction = setInterval(function() {
             const now = new Date().getTime();
-            const distance = countDownDate - now;
+            const distance = countdownDate - now;
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            document.getElementById("countdown").innerHTML = days + " days left!";
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                document.getElementById("countdown").innerHTML = "It's Rose Day!";
+            }
         }, 1000);
 
-        // Personalization logic
-        function personalize() {
-            const name = prompt("Enter your name:");
-            document.getElementById("personalMessage").innerHTML = `Happy Rose Day, ${name}! 🎉`;
+        function playMusic() {
+            document.getElementById('music').play();
         }
-
-        // Confetti effect (add your confetti JS library here)
-        function startConfetti() {
-            const confetti = document.createElement('div');
-            confetti.className = 'confetti';
-            document.body.appendChild(confetti);
-            // Add confetti generation logic here
-        }
-
-        // Background Music
-        const music = new Audio('path/to/rose-day-song.mp3');
-        music.play();
-        
-        // Start confetti when page loads
-        window.onload = startConfetti;
+    </script>
+    <script>
+        // Confetti, Floating Hearts, and Sparkles effects can be added here using popular libraries or custom scripts.
+        // For example, you can integrate a confetti library like 'canvas-confetti'
+        // or create floating hearts with CSS animations.
     </script>
 </body>
 </html>
